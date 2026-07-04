@@ -5,14 +5,31 @@
  * the SAME atoms/molecules show up here. The page-level state models a
  * multi-step adoption form.
  */
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, type ChangeEvent } from 'react';
 import { Button, Icon } from '../../atoms';
 import { FormField } from '../../molecules';
+import { cn } from '../../../lib/cn';
 
-export default function AdoptionFormPage({ petName = 'your new friend' }) {
+export interface AdoptionFormPageProps {
+  petName?: string;
+}
+
+interface AdoptionForm {
+  name: string;
+  email: string;
+  phone: string;
+  homeType: string;
+  hasYard: boolean;
+  experience: string;
+}
+
+type FormErrors = Partial<Record<'name' | 'email' | 'phone', string>>;
+
+export default function AdoptionFormPage({
+  petName = 'your new friend'
+}: AdoptionFormPageProps) {
   const [step, setStep] = useState(1);
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<AdoptionForm>({
     name: '',
     email: '',
     phone: '',
@@ -20,15 +37,16 @@ export default function AdoptionFormPage({ petName = 'your new friend' }) {
     hasYard: false,
     experience: ''
   });
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState<FormErrors>({});
 
-  const update = (k) => (e) => {
-    const v = e?.target?.type === 'checkbox' ? e.target.checked : e.target.value;
-    setForm((s) => ({ ...s, [k]: v }));
-  };
+  const update =
+    (k: keyof AdoptionForm) => (e: ChangeEvent<HTMLInputElement>) => {
+      const v = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+      setForm((s) => ({ ...s, [k]: v }));
+    };
 
   const validateStep1 = () => {
-    const next = {};
+    const next: FormErrors = {};
     if (!form.name) next.name = 'Please tell us your name.';
     if (!form.email || !form.email.includes('@'))
       next.email = 'A valid email helps us stay in touch.';
@@ -57,10 +75,10 @@ export default function AdoptionFormPage({ petName = 'your new friend' }) {
         {[1, 2, 3].map((i) => (
           <div
             key={i}
-            className={[
+            className={cn(
               'h-2 flex-1 rounded-full',
               i <= step ? 'bg-brand-primary' : 'bg-surface-muted'
-            ].join(' ')}
+            )}
           />
         ))}
       </div>
@@ -159,7 +177,3 @@ export default function AdoptionFormPage({ petName = 'your new friend' }) {
     </section>
   );
 }
-
-AdoptionFormPage.propTypes = {
-  petName: PropTypes.string
-};

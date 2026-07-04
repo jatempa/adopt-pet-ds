@@ -8,24 +8,26 @@
  *   It renders ONE element with ONE responsibility: label things.
  *   It has no composition from other design system pieces.
  */
-import PropTypes from 'prop-types';
+import type { LabelHTMLAttributes } from 'react';
+import { cn } from '../../../lib/cn';
+
+export interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {
+  required?: boolean;
+}
 
 export default function Label({
   htmlFor,
   required = false,
-  className = '',
+  className,
   children,
   ...rest
-}) {
-  const classes = [
-    'block text-sm font-medium text-accent-bark',
-    className
-  ]
-    .filter(Boolean)
-    .join(' ');
-
+}: LabelProps) {
   return (
-    <label htmlFor={htmlFor} className={classes} {...rest}>
+    <label
+      htmlFor={htmlFor}
+      className={cn('block text-sm font-medium text-accent-bark', className)}
+      {...rest}
+    >
       {children}
       {required ? (
         <span className="ml-1 text-state-danger" aria-hidden>
@@ -35,10 +37,3 @@ export default function Label({
     </label>
   );
 }
-
-Label.propTypes = {
-  htmlFor: PropTypes.string,
-  required: PropTypes.bool,
-  className: PropTypes.string,
-  children: PropTypes.node
-};

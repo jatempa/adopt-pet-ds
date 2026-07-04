@@ -5,15 +5,23 @@
  * Templates are page skeletons — they define *where* things go, not *what*
  * goes there. A page is just a template with real content slotted in.
  */
-import PropTypes from 'prop-types';
+import type { ReactNode } from 'react';
 import { Header, Footer } from '../../organisms';
+import type { HeaderUser } from '../../organisms/Header/Header';
+
+export interface MainLayoutProps {
+  children?: ReactNode;
+  onSearch?: (query: string) => void;
+  onCtaClick?: () => void;
+  currentUser?: HeaderUser | null;
+}
 
 export default function MainLayout({
   children,
   onSearch,
   onCtaClick,
   currentUser = null
-}) {
+}: MainLayoutProps) {
   return (
     <div className="flex min-h-screen flex-col bg-accent-cream">
       <Header
@@ -28,10 +36,3 @@ export default function MainLayout({
     </div>
   );
 }
-
-MainLayout.propTypes = {
-  children: PropTypes.node,
-  onSearch: PropTypes.func,
-  onCtaClick: PropTypes.func,
-  currentUser: PropTypes.shape({ name: PropTypes.string })
-};

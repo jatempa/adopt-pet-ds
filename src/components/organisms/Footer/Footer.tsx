@@ -4,24 +4,34 @@
  * A multi-column site footer. Mostly presentational, with Icon + Avatar atoms.
  * Demonstrates that an organism does not need to be interactive.
  */
-import PropTypes from 'prop-types';
 import { Icon } from '../../atoms';
 
-export default function Footer({ sections }) {
-  const cols = sections || [
-    {
-      title: 'Adopt',
-      links: ['Browse pets', 'Adoption guide', 'Success stories']
-    },
-    {
-      title: 'Help',
-      links: ['Volunteer', 'Donate', 'Foster a pet']
-    },
-    {
-      title: 'About',
-      links: ['Our mission', 'Press', 'Contact us']
-    }
-  ];
+export interface FooterSection {
+  title: string;
+  links: string[];
+}
+
+export interface FooterProps {
+  sections?: FooterSection[];
+}
+
+const DEFAULT_SECTIONS: FooterSection[] = [
+  {
+    title: 'Adopt',
+    links: ['Browse pets', 'Adoption guide', 'Success stories']
+  },
+  {
+    title: 'Help',
+    links: ['Volunteer', 'Donate', 'Foster a pet']
+  },
+  {
+    title: 'About',
+    links: ['Our mission', 'Press', 'Contact us']
+  }
+];
+
+export default function Footer({ sections }: FooterProps) {
+  const cols = sections || DEFAULT_SECTIONS;
 
   return (
     <footer className="mt-24 border-t border-accent-bark/10 bg-surface-muted">
@@ -68,7 +78,3 @@ export default function Footer({ sections }) {
     </footer>
   );
 }
-
-Footer.propTypes = {
-  sections: PropTypes.array
-};

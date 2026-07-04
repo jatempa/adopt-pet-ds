@@ -5,15 +5,27 @@
  * Demonstrates how state can live *inside* an organism while still being
  * driver-agnostic (the parent page calls `onChange` with a filter object).
  */
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Button, Icon } from '../../atoms';
 import { Tag, FormField } from '../../molecules';
 
-export default function PetFilters({ value, onChange }) {
-  const [local, setLocal] = useState(value || { species: [], size: '', age: '' });
+export interface PetFilterState {
+  species: string[];
+  size: string;
+  age: string;
+}
 
-  const toggleSpecies = (label) => {
+export interface PetFiltersProps {
+  value?: PetFilterState;
+  onChange?: (value: PetFilterState) => void;
+}
+
+const EMPTY_FILTERS: PetFilterState = { species: [], size: '', age: '' };
+
+export default function PetFilters({ value, onChange }: PetFiltersProps) {
+  const [local, setLocal] = useState<PetFilterState>(value || EMPTY_FILTERS);
+
+  const toggleSpecies = (label: string) => {
     const has = local.species.includes(label);
     const next = has
       ? local.species.filter((s) => s !== label)
@@ -23,16 +35,15 @@ export default function PetFilters({ value, onChange }) {
     onChange?.(updated);
   };
 
-  const update = (key, val) => {
+  const update = (key: 'size' | 'age', val: string) => {
     const updated = { ...local, [key]: val };
     setLocal(updated);
     onChange?.(updated);
   };
 
   const reset = () => {
-    const cleared = { species: [], size: '', age: '' };
-    setLocal(cleared);
-    onChange?.(cleared);
+    setLocal(EMPTY_FILTERS);
+    onChange?.(EMPTY_FILTERS);
   };
 
   return (
@@ -80,12 +91,3 @@ export default function PetFilters({ value, onChange }) {
     </section>
   );
 }
-
-PetFilters.propTypes = {
-  value: PropTypes.shape({
-    species: PropTypes.arrayOf(PropTypes.string),
-    size: PropTypes.string,
-    age: PropTypes.string
-  }),
-  onChange: PropTypes.func
-};

@@ -10,8 +10,23 @@
  *   handles the standard "field with caption" pattern. The error/hint logic
  *   is encapsulated — *no one else* needs to know about it.
  */
-import PropTypes from 'prop-types';
+import type { ChangeEventHandler } from 'react';
 import { Label, Input } from '../../atoms';
+import { cn } from '../../../lib/cn';
+
+export interface FormFieldProps {
+  id: string;
+  label: string;
+  required?: boolean;
+  type?: string;
+  placeholder?: string;
+  value?: string;
+  onChange?: ChangeEventHandler<HTMLInputElement>;
+  error?: string;
+  hint?: string;
+  disabled?: boolean;
+  className?: string;
+}
 
 export default function FormField({
   id,
@@ -23,13 +38,14 @@ export default function FormField({
   onChange,
   error,
   hint,
-  disabled = false
-}) {
+  disabled = false,
+  className
+}: FormFieldProps) {
   const errorId = error ? `${id}-error` : undefined;
   const hintId = hint ? `${id}-hint` : undefined;
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className={cn('flex flex-col gap-1.5', className)}>
       <Label htmlFor={id} required={required}>
         {label}
       </Label>
@@ -56,16 +72,3 @@ export default function FormField({
     </div>
   );
 }
-
-FormField.propTypes = {
-  id: PropTypes.string.isRequired,
-  label: PropTypes.string.isRequired,
-  required: PropTypes.bool,
-  type: PropTypes.string,
-  placeholder: PropTypes.string,
-  value: PropTypes.string,
-  onChange: PropTypes.func,
-  error: PropTypes.string,
-  hint: PropTypes.string,
-  disabled: PropTypes.bool
-};

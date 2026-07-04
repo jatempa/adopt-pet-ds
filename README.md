@@ -88,12 +88,12 @@ the left and a live preview on the right.
 
 ### How a fixture works
 
-A fixture is just a `.fixture.jsx` file colocated with the component it
+A fixture is just a `.fixture.tsx` file colocated with the component it
 documents. React Cosmos auto-discovers them via the pattern
-`**/__fixtures__/*.fixture.jsx` (set in `cosmos.config.json`).
+`**/__fixtures__/*.fixture.tsx` (set in `cosmos.config.json`).
 
-```jsx
-// src/components/molecules/PetCard/__fixtures__/PetCard.fixture.jsx
+```tsx
+// src/components/molecules/PetCard/__fixtures__/PetCard.fixture.tsx
 import PetCard from '../PetCard';
 
 const SAMPLE_PET = {
@@ -153,53 +153,53 @@ Open **http://localhost:5000** after `npm run cosmos` and you'll find:
 adopt-pet-ds/
 ├── cosmos.config.json        ← React Cosmos config
 ├── tailwind.config.js        ← Design tokens (the source of truth)
-├── vite.config.js            ← Vite config
+├── vite.config.ts            ← Vite config
 └── src/
     ├── index.css             ← Tailwind layers + utilities
-    ├── main.jsx              ← App entry (showcase mode)
-    ├── App.jsx               ← Tiny "router" between Home / Adoption form
+    ├── main.tsx              ← App entry (showcase mode)
+    ├── App.tsx               ← Tiny "router" between Home / Adoption form
     ├── data/
-    │   └── pets.js           ← Shared mock data (also used by fixtures)
+    │   └── pets.ts           ← Shared mock data (also used by fixtures)
     └── components/
         ├── atoms/                        ← Layer 1
         │   ├── Button/
-        │   │   ├── Button.jsx
-        │   │   └── __fixtures__/Primary.fixture.jsx
-        │   │   └── __fixtures__/AllVariants.fixture.jsx
+        │   │   ├── Button.tsx
+        │   │   └── __fixtures__/Primary.fixture.tsx
+        │   │   └── __fixtures__/AllVariants.fixture.tsx
         │   ├── Input/, Label/, Badge/, Avatar/, Icon/
-        │   └── index.js                 ← public exports
+        │   └── index.ts                 ← public exports
         ├── molecules/                    ← Layer 2
         │   ├── SearchBar/
         │   ├── PetCard/
         │   ├── Tag/
         │   ├── FormField/
-        │   └── index.js
+        │   └── index.ts
         ├── organisms/                    ← Layer 3
         │   ├── Header/
         │   ├── Footer/
         │   ├── PetFilters/
         │   ├── PetGallery/
-        │   └── index.js
+        │   └── index.ts
         ├── templates/                    ← Layer 4
         │   ├── MainLayout/
-        │   └── index.js
+        │   └── index.ts
         └── pages/                        ← Layer 5
             ├── HomePage/
             ├── AdoptionFormPage/
-            └── index.js
+            └── index.ts
 ```
 
 ### The "**public surface**" pattern
 
-Every layer has an `index.js` file that re-exports its components. Lower
+Every layer has an `index.ts` file that re-exports its components. Lower
 layers NEVER reach into another layer's internal folder — they go through
 the barrel. This is how you keep the system from becoming spaghetti.
 
 ```js
-// ✅ Good — molecules imports from atoms/index.js
+// ✅ Good — molecules imports from atoms/index.ts
 import { Button, Input, Icon } from '../../atoms';
 
-// ❌ Bad — molecules reaches into atoms/Button/Button.jsx
+// ❌ Bad — molecules reaches into atoms/Button/Button.tsx
 import Button from '../../atoms/Button/Button';
 ```
 
@@ -232,8 +232,8 @@ If your fixtures render but the layout is **completely unstyled** — raw HTML
 buttons, un-sized images, no colors — you're hitting the most common
 React-Cosmos-+-Tailwind pitfall:
 
-> The Cosmos Vite plugin **replaces your `main.jsx`** with a tiny virtual
-> module. Your `import './index.css'` line at the top of `main.jsx`
+> The Cosmos Vite plugin **replaces your `main.tsx`** with a tiny virtual
+> module. Your `import './index.css'` line at the top of `main.tsx`
 > disappears — so Tailwind never gets loaded into the fixture iframe.
 
 **Fix:** tell Cosmos to import your CSS as a *global import* before any
@@ -260,8 +260,8 @@ renders. This repo already has it wired up — see `cosmos.config.json` and
    `tailwind.config.js` to `#3B82F6` and watch every button, badge, and hero
    shift instantly.
 
-2. **Add a new atom.** Create `src/components/atoms/Spinner/Spinner.jsx` with
-   a `__fixtures__/Spinner.fixture.jsx`. Re-run `npm run cosmos` and it's
+2. **Add a new atom.** Create `src/components/atoms/Spinner/Spinner.tsx` with
+   a `__fixtures__/Spinner.fixture.tsx`. Re-run `npm run cosmos` and it's
    there in the tree. *Auto-discovery is the magic.*
 
 3. **Add a "Loading..." state to PetCard.**
@@ -269,9 +269,9 @@ renders. This repo already has it wired up — see `cosmos.config.json` and
    dev compare the empty vs. populated state.
 
 4. **Build a new page.** Create
-   `src/components/pages/ShelterPage/ShelterPage.jsx`. Use organisms like
+   `src/components/pages/ShelterPage/ShelterPage.tsx`. Use organisms like
    `Header`, `PetFilters`, `PetGallery`. Use the *MainLayout* template.
-   Wire it into `App.jsx` next to the others.
+   Wire it into `App.tsx` next to the others.
 
 5. **Use the design tokens.** Pick a token, then grep
    for `bg-[#` or `text-[#` — you should find ZERO matches outside the
@@ -289,7 +289,7 @@ renders. This repo already has it wired up — see `cosmos.config.json` and
 - **PropTypes** (lightweight runtime check — `prop-types` package).
 - **Tailwind utility classes inline**, no CSS Modules or styled-components
   — tokens do all the heavy lifting.
-- **Each layer has an `index.js` barrel** for clean public APIs.
+- **Each layer has an `index.ts` barrel** for clean public APIs.
 - **Co-located `__fixtures__/` directory** so fixtures live with their
   component.
 - **"Educational JSDoc" at the top of every component file** explaining
@@ -301,7 +301,7 @@ renders. This repo already has it wired up — see `cosmos.config.json` and
 
 This is a starting point. Real production systems usually add:
 
-- **A decorator** (Cosmos's `cosmos.decorator.jsx` at the project root) to
+- **A decorator** (Cosmos's `cosmos.decorator.tsx` at the project root) to
   inject global providers like React Query, Router, Theme.
 - **Snapshot tests** via `react-cosmos` `vitest` integration.
 - **CI integration** that runs Cosmos export as a static site on every PR.

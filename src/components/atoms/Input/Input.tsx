@@ -7,23 +7,20 @@
  * Why an atom and not a molecule?
  *   It is a thin, single-purpose wrapper around ONE HTML element. Search bars,
  *   email fields with validation, etc. — those that *compose* this Input with
- *   a label and a hint message — are molecules (see FormField.jsx).
+ *   a label and a hint message — are molecules (see FormField.tsx).
  */
-import PropTypes from 'prop-types';
-import { forwardRef } from 'react';
+import { forwardRef, type InputHTMLAttributes } from 'react';
+import { cn } from '../../../lib/cn';
 
-const Input = forwardRef(function Input(
-  {
-    type = 'text',
-    invalid = false,
-    placeholder,
-    disabled = false,
-    className = '',
-    ...rest
-  },
+export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+  invalid?: boolean;
+}
+
+const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
+  { type = 'text', invalid = false, placeholder, disabled = false, className, ...rest },
   ref
 ) {
-  const classes = [
+  const classes = cn(
     'h-10 w-full rounded-xl border bg-surface px-3 text-sm text-accent-bark',
     'placeholder:text-accent-bark/50',
     'transition-colors duration-150 ds-focus-ring',
@@ -32,9 +29,7 @@ const Input = forwardRef(function Input(
       : 'border-accent-bark/15 focus:border-brand-primary',
     disabled && 'opacity-60 cursor-not-allowed bg-surface-muted',
     className
-  ]
-    .filter(Boolean)
-    .join(' ');
+  );
 
   return (
     <input
@@ -48,13 +43,5 @@ const Input = forwardRef(function Input(
     />
   );
 });
-
-Input.propTypes = {
-  type: PropTypes.string,
-  invalid: PropTypes.bool,
-  placeholder: PropTypes.string,
-  disabled: PropTypes.bool,
-  className: PropTypes.string
-};
 
 export default Input;

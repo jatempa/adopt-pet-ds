@@ -3,7 +3,21 @@
  * In a real app this lives in services/api; for the design system we keep it
  * here so Cosmos fixtures stay deterministic and offline.
  */
-export const PETS = [
+
+export type PetStatus = 'available' | 'pending' | 'adopted';
+
+export interface Pet {
+  id: string;
+  name: string;
+  breed: string;
+  age: string;
+  status: PetStatus;
+  bio: string;
+  image: string | null;
+  avatar: string | null;
+}
+
+export const PETS: Pet[] = [
   {
     id: 'p1',
     name: 'Mochi',
@@ -77,3 +91,4 @@ export const PETS = [
       'https://images.unsplash.com/photo-1574144611937-0df059b5ef3e?w=120&q=80&auto=format'
   }
 ];
+

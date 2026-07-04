@@ -9,17 +9,20 @@ import { useState } from 'react';
 import { Button } from './components/atoms';
 import { MainLayout } from './components/templates';
 import { HomePage, AdoptionFormPage } from './components/pages';
+import type { Pet } from './data/pets';
 
 const ROUTES = {
   HOME: 'home',
   FORM: 'form'
-};
+} as const;
+
+type Route = (typeof ROUTES)[keyof typeof ROUTES];
 
 export default function App() {
-  const [route, setRoute] = useState(ROUTES.HOME);
+  const [route, setRoute] = useState<Route>(ROUTES.HOME);
   const [petName, setPetName] = useState('Mochi');
 
-  const handleSelect = (pet) => {
+  const handleSelect = (pet: Pet) => {
     setPetName(pet.name);
     setRoute(ROUTES.FORM);
     window.scrollTo({ top: 0, behavior: 'smooth' });

@@ -15,33 +15,42 @@
  *   The data shape (`pet` prop) lives one level UP in organisms/pages.
  *   Molecules never fetch data — they receive it and render it.
  */
-import PropTypes from 'prop-types';
 import { Avatar, Badge, Button, Icon } from '../../atoms';
+import type { BadgeTone } from '../../atoms/Badge/Badge';
+import type { Pet, PetStatus } from '../../../data/pets';
+import { cn } from '../../../lib/cn';
 
-const STATUS_TONE = {
+const STATUS_TONE: Record<PetStatus, BadgeTone> = {
   available: 'success',
   pending: 'warning',
   adopted: 'neutral'
 };
 
+export interface PetCardProps {
+  pet: Pet;
+  onAdopt?: () => void;
+  onViewDetails?: () => void;
+  className?: string;
+}
+
 export default function PetCard({
   pet,
   onAdopt,
   onViewDetails,
-  className = ''
-}) {
-  const tone = STATUS_TONE[pet.status] || 'neutral';
+  className
+}: PetCardProps) {
+  const tone = STATUS_TONE[pet.status] ?? 'neutral';
   const statusLabel = pet.status
     ? pet.status.charAt(0).toUpperCase() + pet.status.slice(1)
     : 'Available';
 
   return (
     <article
-      className={[
+      className={cn(
         'group flex flex-col overflow-hidden rounded-2xl bg-surface shadow-soft',
         'transition-transform duration-200 hover:-translate-y-1',
         className
-      ].join(' ')}
+      )}
     >
       {/* Cover image with status overlay */}
       <div className="relative h-44 w-full overflow-hidden bg-surface-muted">
@@ -97,19 +106,3 @@ export default function PetCard({
     </article>
   );
 }
-
-PetCard.propTypes = {
-  pet: PropTypes.shape({
-    id: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    breed: PropTypes.string,
-    age: PropTypes.string,
-    bio: PropTypes.string,
-    image: PropTypes.string,
-    avatar: PropTypes.string,
-    status: PropTypes.oneOf(['available', 'pending', 'adopted'])
-  }).isRequired,
-  onAdopt: PropTypes.func,
-  onViewDetails: PropTypes.func,
-  className: PropTypes.string
-};

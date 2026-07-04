@@ -6,23 +6,33 @@
  *
  * Atomic because: ONE element, ONE concern (a small visual identifier).
  */
-import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { cn } from '../../../lib/cn';
 
-const SIZES = {
+export type AvatarSize = 'sm' | 'md' | 'lg' | 'xl';
+
+const SIZES: Record<AvatarSize, string> = {
   sm: 'h-8 w-8 text-xs',
   md: 'h-12 w-12 text-sm',
   lg: 'h-20 w-20 text-lg',
   xl: 'h-32 w-32 text-2xl'
 };
 
+export interface AvatarProps {
+  src?: string | null;
+  alt?: string;
+  name?: string;
+  size?: AvatarSize;
+  className?: string;
+}
+
 export default function Avatar({
   src,
   alt = '',
   name = '',
   size = 'md',
-  className = ''
-}) {
+  className
+}: AvatarProps) {
   const [errored, setErrored] = useState(false);
   const initials = name
     .split(/\s+/)
@@ -31,14 +41,12 @@ export default function Avatar({
     .join('')
     .toUpperCase();
 
-  const classes = [
+  const classes = cn(
     'inline-flex items-center justify-center rounded-full overflow-hidden',
     'bg-brand-secondary/20 text-brand-secondary font-semibold',
     SIZES[size],
     className
-  ]
-    .filter(Boolean)
-    .join(' ');
+  );
 
   if (!src || errored) {
     return (
@@ -53,15 +61,7 @@ export default function Avatar({
       src={src}
       alt={alt || name}
       onError={() => setErrored(true)}
-      className={`${classes} object-cover`}
+      className={cn(classes, 'object-cover')}
     />
   );
 }
-
-Avatar.propTypes = {
-  src: PropTypes.string,
-  alt: PropTypes.string,
-  name: PropTypes.string,
-  size: PropTypes.oneOf(['sm', 'md', 'lg', 'xl']),
-  className: PropTypes.string
-};

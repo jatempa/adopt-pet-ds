@@ -10,11 +10,26 @@
  *   an interface. The Header is exactly that: brand mark + nav + search +
  *   (optional) CTA. It can stand alone and be dropped into any template.
  */
-import PropTypes from 'prop-types';
 import { Icon, Button } from '../../atoms';
 import { SearchBar } from '../../molecules';
 
-const NAV_LINKS = [
+export interface NavLink {
+  href: string;
+  label: string;
+}
+
+export interface HeaderUser {
+  name: string;
+}
+
+export interface HeaderProps {
+  onSearch?: (query: string) => void;
+  onCtaClick?: () => void;
+  currentUser?: HeaderUser | null;
+  links?: NavLink[];
+}
+
+const NAV_LINKS: NavLink[] = [
   { href: '#adopt', label: 'Adopt' },
   { href: '#shelters', label: 'Shelters' },
   { href: '#volunteer', label: 'Volunteer' },
@@ -26,7 +41,7 @@ export default function Header({
   onCtaClick,
   currentUser = null,
   links = NAV_LINKS
-}) {
+}: HeaderProps) {
   return (
     <header className="sticky top-0 z-30 border-b border-accent-bark/5 bg-surface/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-4">
@@ -79,12 +94,3 @@ export default function Header({
     </header>
   );
 }
-
-Header.propTypes = {
-  onSearch: PropTypes.func,
-  onCtaClick: PropTypes.func,
-  currentUser: PropTypes.shape({ name: PropTypes.string }),
-  links: PropTypes.arrayOf(
-    PropTypes.shape({ href: PropTypes.string, label: PropTypes.string })
-  )
-};

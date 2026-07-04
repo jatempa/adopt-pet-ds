@@ -10,10 +10,10 @@
  *
  * How to add a new icon:
  *   1. Grab the <path> from the source SVG (e.g. Heroicons, Lucide).
- *   2. Add it as a new entry under SPRITE.
+ *   2. Add it as a new entry under SPRITE (IconName updates automatically).
  *   3. (Optional) Write a fixture in __fixtures__ so it's tested in Cosmos.
  */
-import PropTypes from 'prop-types';
+import type { SVGProps } from 'react';
 
 const SPRITE = {
   // Heroicons outline — pet + UI essentials. Tiny subset, easy to extend.
@@ -36,9 +36,13 @@ const SPRITE = {
   calendar:
     'M8 2v4M16 2v4M3 10h18M5 6h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z',
   info: 'M12 16v-4M12 8h.01M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z'
-};
+} as const;
 
-const STROKE_ICONS = new Set([
+export type IconName = keyof typeof SPRITE;
+
+export const ICON_NAMES = Object.keys(SPRITE) as IconName[];
+
+const STROKE_ICONS = new Set<IconName>([
   'search',
   'mail',
   'arrow-right',
@@ -52,13 +56,19 @@ const STROKE_ICONS = new Set([
   'user'
 ]);
 
+export interface IconProps extends Omit<SVGProps<SVGSVGElement>, 'name'> {
+  name: IconName;
+  size?: number;
+  strokeWidth?: number;
+}
+
 export default function Icon({
   name,
   size = 20,
-  className = '',
+  className,
   strokeWidth = 1.8,
   ...rest
-}) {
+}: IconProps) {
   const path = SPRITE[name];
   if (!path) return null;
 
@@ -83,10 +93,3 @@ export default function Icon({
     </svg>
   );
 }
-
-Icon.propTypes = {
-  name: PropTypes.oneOf(Object.keys(SPRITE)),
-  size: PropTypes.number,
-  className: PropTypes.string,
-  strokeWidth: PropTypes.number
-};

@@ -13,18 +13,23 @@
  *   SearchBar's own layout (icon-on-the-left, button-on-the-right) stays put.
  *   That's the layered separation at work.
  */
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Icon, Input, Button } from '../../atoms';
+
+export interface SearchBarProps {
+  placeholder?: string;
+  defaultValue?: string;
+  onSubmit?: (value: string) => void;
+}
 
 export default function SearchBar({
   placeholder = 'Search adoptable pets...',
   onSubmit,
   defaultValue = ''
-}) {
+}: SearchBarProps) {
   const [value, setValue] = useState(defaultValue);
 
-  const submit = (e) => {
+  const submit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     onSubmit?.(value);
   };
@@ -53,9 +58,3 @@ export default function SearchBar({
     </form>
   );
 }
-
-SearchBar.propTypes = {
-  placeholder: PropTypes.string,
-  defaultValue: PropTypes.string,
-  onSubmit: PropTypes.func
-};

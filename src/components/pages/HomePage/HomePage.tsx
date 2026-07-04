@@ -5,21 +5,36 @@
  * reads from data sources, holds page-level state (e.g. filters), and
  * orchestrates navigation. It is the only place in the system that "knows
  * too much" — and that's intentional.
+ *
+ * Uses PETS so the gallery grid gets
+ * exercised at a realistic scale for performance testing.
  */
-import PropTypes from 'prop-types';
 import { useMemo, useState } from 'react';
 import { Button, Icon } from '../../atoms';
 import { PetFilters, PetGallery } from '../../organisms';
-import { PETS } from '../../../data/pets';
+import type { PetFilterState } from '../../organisms/PetFilters/PetFilters';
+import { PETS, type Pet } from '../../../data/pets';
 
-export default function HomePage({ onSelectPet, onSearch, onCtaClick }) {
-  const [filters, setFilters] = useState({ species: [], size: '', age: '' });
+export interface HomePageProps {
+  onSelectPet?: (pet: Pet) => void;
+  onSearch?: (query: string) => void;
+  onCtaClick?: (arg?: string) => void;
+}
+
+export default function HomePage({ onSelectPet, onSearch, onCtaClick }: HomePageProps) {
+  const [filters, setFilters] = useState<PetFilterState>({
+    species: [],
+    size: '',
+    age: ''
+  });
 
   const filteredPets = useMemo(() => {
     return PETS.filter((p) => {
       if (filters.species.length === 0) return true;
-      return filters.species.includes(p.breed?.split(' ')[0]) ||
-        filters.species.some((s) => p.breed?.toLowerCase().includes(s.toLowerCase()));
+      return (
+        filters.species.includes(p.breed?.split(' ')[0]) ||
+        filters.species.some((s) => p.breed?.toLowerCase().includes(s.toLowerCase()))
+      );
     });
   }, [filters]);
 
@@ -51,7 +66,7 @@ export default function HomePage({ onSelectPet, onSearch, onCtaClick }) {
           {featured.map((pet) => (
             <img
               key={pet.id}
-              src={pet.image}
+              src={pet.image ?? undefined}
               alt={pet.name}
               className="h-28 w-full rounded-2xl object-cover shadow-soft md:h-36"
             />
@@ -84,9 +99,3 @@ export default function HomePage({ onSelectPet, onSearch, onCtaClick }) {
     </div>
   );
 }
-
-HomePage.propTypes = {
-  onSelectPet: PropTypes.func,
-  onSearch: PropTypes.func,
-  onCtaClick: PropTypes.func
-};

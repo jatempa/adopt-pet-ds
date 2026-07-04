@@ -1,6 +1,7 @@
 import PetCard from '../PetCard';
+import type { Pet } from '../../../../data/pets';
 
-const SAMPLE_PET = {
+const SAMPLE_PET: Pet = {
   id: 'demo-pet-1',
   name: 'Mochi',
   breed: 'Shiba Inu',

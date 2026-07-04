@@ -2,11 +2,11 @@
 export default {
   content: [
     './index.html',
-    './src/**/*.{js,jsx}',
+    './src/**/*.{js,jsx,ts,tsx}',
     // 👇 This line is critical: React Cosmos reads fixtures from src/cosmos
     // but those fixtures RENDER components from src/components, so we must
     // make sure Tailwind also scans the cosmos folder to keep generated classes.
-    './src/cosmos/**/*.{js,jsx}'
+    './src/cosmos/**/*.{js,jsx,ts,tsx}'
   ],
   theme: {
     extend: {

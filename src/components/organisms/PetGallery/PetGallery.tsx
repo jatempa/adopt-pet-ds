@@ -8,9 +8,17 @@
  *   • It does not fetch data (it accepts `pets` as a prop).
  *   • It IS a recognisable, reusable section ("a gallery of cards").
  */
-import PropTypes from 'prop-types';
 import { Icon } from '../../atoms';
 import { PetCard } from '../../molecules';
+import type { Pet } from '../../../data/pets';
+
+export interface PetGalleryProps {
+  pets?: Pet[];
+  onAdopt?: (pet: Pet) => void;
+  onViewDetails?: (pet: Pet) => void;
+  loading?: boolean;
+  emptyMessage?: string;
+}
 
 export default function PetGallery({
   pets = [],
@@ -18,7 +26,7 @@ export default function PetGallery({
   onViewDetails,
   loading = false,
   emptyMessage = 'No pets match your filters yet — try clearing them!'
-}) {
+}: PetGalleryProps) {
   if (loading) {
     return (
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -56,11 +64,3 @@ export default function PetGallery({
     </div>
   );
 }
-
-PetGallery.propTypes = {
-  pets: PropTypes.array,
-  onAdopt: PropTypes.func,
-  onViewDetails: PropTypes.func,
-  loading: PropTypes.bool,
-  emptyMessage: PropTypes.string
-};
