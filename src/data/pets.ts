@@ -92,3 +92,19 @@ export const PETS: Pet[] = [
   }
 ];
 
+/**
+ * Deterministic bulk data for stress-test fixtures (e.g. PetGallery
+ * "Performance"). Cycles through PETS so no network images beyond the
+ * base set are requested.
+ */
+export function generatePets(count: number): Pet[] {
+  return Array.from({ length: count }, (_, i) => {
+    const base = PETS[i % PETS.length];
+    return {
+      ...base,
+      id: `gen-${i}`,
+      name: `${base.name} #${i + 1}`
+    };
+  });
+}
+

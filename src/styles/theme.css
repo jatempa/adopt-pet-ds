@@ -1,0 +1,48 @@
+/**
+ * theme.css — design tokens for the Adopt-Pet design system
+ * ----------------------------------------------------------------------------
+ * Tailwind 4 CSS-first theme: every variable below becomes a utility
+ * (e.g. --color-brand-primary → bg-brand-primary, text-brand-primary, …).
+ * Imported by BOTH CSS entries (src/index.css for the app, src/cosmos.css for
+ * the Cosmos playground) so components render identically in both.
+ */
+@theme {
+  /* Brand — warm orange (friendly, energetic) + sage green (growth, wellbeing) */
+  --color-brand-primary: #FF7A59;
+  --color-brand-primary-hover: #E5674A;
+  --color-brand-secondary: #6FAE8E;
+  --color-brand-secondary-hover: #578F71;
+
+  /* Accents — soft cream background, cozy brown text */
+  --color-accent-cream: #FFF8F1;
+  --color-accent-bark: #4A3B30;
+
+  /* Surfaces */
+  --color-surface: #FFFFFF;
+  --color-surface-muted: #F5F1EC;
+
+  /* Semantic states */
+  --color-state-success: #22C55E;
+  --color-state-warning: #F59E0B;
+  --color-state-danger: #EF4444;
+  --color-state-info: #3B82F6;
+
+  /* Typography — friendly rounded sans for headings, neutral for body */
+  --font-display: "Fredoka", system-ui, sans-serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+
+  /* Radii — softer than Tailwind's defaults (0.75rem / 1rem) to feel pet-friendly */
+  --radius-xl: 0.875rem;
+  --radius-2xl: 1.25rem;
+
+  /* Soft, warm shadow */
+  --shadow-soft: 0 4px 14px rgba(74, 59, 48, 0.08);
+}
+
+/* Reusable design-system utilities. These are NOT component
+   implementations — atoms/molecules live in /components. */
+@layer components {
+  .ds-focus-ring {
+    @apply focus:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2;
+  }
+}

@@ -1,29 +1,17 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import "./styles/theme.css";
 
 /* ----------------------------------------------------------
-   Base layer: global resets and tokens
+   Base layer: global resets driven by the design tokens
    ---------------------------------------------------------- */
 @layer base {
   html {
-    font-family: 'Inter', system-ui, sans-serif;
-    color: theme('colors.accent.bark');
-    background-color: theme('colors.accent.cream');
+    font-family: var(--font-sans);
+    color: var(--color-accent-bark);
+    background-color: var(--color-accent-cream);
   }
   h1, h2, h3, h4 {
-    font-family: 'Fredoka', system-ui, sans-serif;
+    font-family: var(--font-display);
     font-weight: 600;
-  }
-}
-
-/* ----------------------------------------------------------
-   Component utilities that we want to reuse consistently
-   across the design system. These are NOT component
-   implementations — atoms/molecules live in /components.
-   ---------------------------------------------------------- */
-@layer components {
-  .ds-focus-ring {
-    @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2;
   }
 }
