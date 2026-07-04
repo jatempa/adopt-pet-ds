@@ -35,8 +35,8 @@ export default function Footer({ sections }: FooterProps) {
 
   return (
     <footer className="mt-24 border-t border-accent-bark/10 bg-surface-muted">
-      <div className="mx-auto grid max-w-6xl gap-8 px-6 py-12 md:grid-cols-4">
-        <div>
+      <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 py-10 sm:px-6 md:grid-cols-4 md:py-12">
+        <div className="col-span-2 md:col-span-1">
           <div className="flex items-center gap-2">
             <span className="flex h-8 w-8 items-center justify-center rounded-xl bg-brand-primary text-white">
               <Icon name="paw" size={16} />
@@ -51,7 +51,7 @@ export default function Footer({ sections }: FooterProps) {
         </div>
         {cols.map((col) => (
           <div key={col.title}>
-            <h4 className="font-display text-sm font-semibold uppercase tracking-wider text-accent-bark/80">
+            <h4 className="font-display text-eyebrow uppercase text-accent-bark/80">
               {col.title}
             </h4>
             <ul className="mt-3 space-y-2">

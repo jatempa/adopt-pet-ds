@@ -50,7 +50,7 @@ export default function Header({
           <span className="flex h-9 w-9 items-center justify-center rounded-xl bg-brand-primary text-white">
             <Icon name="paw" size={20} />
           </span>
-          <span className="font-display text-lg font-semibold tracking-tight">
+          <span className="font-display text-subheading font-semibold tracking-tight">
             AdoptPet
           </span>
         </a>

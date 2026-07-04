@@ -64,7 +64,7 @@ export default function AdoptionFormPage({
   return (
     <section className="mx-auto max-w-2xl">
       <header className="mb-8">
-        <h1 className="font-display text-3xl font-bold">Adopt {petName}</h1>
+        <h1 className="font-display text-display-sm">Adopt {petName}</h1>
         <p className="mt-2 text-accent-bark/70">
           Step {step} of 3 — takes about 2 minutes.
         </p>
@@ -149,7 +149,7 @@ export default function AdoptionFormPage({
             <span className="text-brand-primary">
               <Icon name="heart" size={36} />
             </span>
-            <h3 className="font-display text-xl">You're all set!</h3>
+            <h3 className="font-display text-subheading">You're all set!</h3>
             <p className="max-w-md text-sm text-accent-bark/70">
               We'll review your application and reach out within 24 hours. Thank
               you for choosing to adopt, not shop.

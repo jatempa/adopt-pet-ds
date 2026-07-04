@@ -43,9 +43,9 @@ export default function HomePage({ onSelectPet, onSearch, onCtaClick }: HomePage
   return (
     <div className="flex flex-col gap-12">
       {/* HERO ------------------------------------------------------ */}
-      <section className="grid items-center gap-8 rounded-3xl bg-brand-secondary/10 p-8 md:grid-cols-2 md:p-12">
+      <section className="grid items-center gap-8 rounded-3xl bg-brand-secondary/10 p-6 sm:p-8 md:grid-cols-2 md:p-12">
         <div>
-          <h1 className="font-display text-4xl font-bold leading-tight md:text-5xl">
+          <h1 className="font-display text-display md:text-display-lg">
             Find your new <span className="text-brand-primary">best friend</span>.
           </h1>
           <p className="mt-4 max-w-md text-accent-bark/80">
@@ -68,7 +68,7 @@ export default function HomePage({ onSelectPet, onSearch, onCtaClick }: HomePage
               key={pet.id}
               src={pet.image ?? undefined}
               alt={pet.name}
-              className="h-28 w-full rounded-2xl object-cover shadow-soft md:h-36"
+              className="h-20 w-full rounded-2xl object-cover shadow-soft sm:h-28 md:h-36"
             />
           ))}
         </div>
@@ -76,9 +76,9 @@ export default function HomePage({ onSelectPet, onSearch, onCtaClick }: HomePage
 
       {/* BROWSE ---------------------------------------------------- */}
       <section className="flex flex-col gap-6">
-        <div className="flex items-end justify-between">
+        <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h2 className="font-display text-2xl font-bold">Adoptable pets</h2>
+            <h2 className="font-display text-heading">Adoptable pets</h2>
             <p className="text-sm text-accent-bark/70">
               Each one is vaccinated, microchipped, and ready for love.
             </p>

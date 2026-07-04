@@ -29,7 +29,7 @@ export default function MainLayout({
         onCtaClick={onCtaClick}
         currentUser={currentUser}
       />
-      <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10">
+      <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 sm:px-6 md:py-10">
         {children}
       </main>
       <Footer />

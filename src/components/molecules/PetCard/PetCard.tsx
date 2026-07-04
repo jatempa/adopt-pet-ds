@@ -80,7 +80,7 @@ export default function PetCard({
             className="ring-2 ring-brand-secondary/30"
           />
           <div>
-            <h3 className="font-display text-lg leading-tight">{pet.name}</h3>
+            <h3 className="font-display text-subheading">{pet.name}</h3>
             <p className="text-xs text-accent-bark/70">
               {pet.breed} · {pet.age}
             </p>
