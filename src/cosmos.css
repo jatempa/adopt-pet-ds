@@ -1,0 +1,37 @@
+/**
+ * cosmos.css — CSS injected into every Cosmos fixture preview
+ * ----------------------------------------------------------------------------
+ * Why a separate file? When the Cosmos Vite plugin loads a fixture, it uses
+ * its own virtual entry (not our src/main.jsx). That virtual entry doesn't
+ * import our normal CSS, so Tailwind classes inside fixtures wouldn't be
+ * compiled.
+ *
+ * The fix: list this file in `cosmos.config.json → globalImports`. Cosmos
+ * imports it BEFORE every fixture, which:
+ *   • Loads Tailwind's @tailwind directives
+ *   • Triggers Vite's PostCSS pipeline → Tailwind JIT-compiles all classes
+ *     referenced from src/components/**
+ *   • Injects the result into the playground iframe <head>
+ *
+ * This is the same content as src/index.css — kept separate so future
+ * design-system edits don't accidentally affect fixture rendering.
+ */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Light, neutral iframe background — keeps the playground readable even
+   for "card-on-transparent" components. */
+html,
+body,
+#root {
+  background: #FAFAFA;
+  min-height: 100%;
+}
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+}
+h1, h2, h3, h4 {
+  font-family: 'Fredoka', system-ui, sans-serif;
+  font-weight: 600;
+}

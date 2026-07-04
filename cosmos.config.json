@@ -1,0 +1,14 @@
+{
+  "$schema": "https://raw.githubusercontent.com/react-cosmos/react-cosmos/main/packages/react-cosmos/config.schema.json",
+  "rootDir": ".",
+  "port": 5000,
+  "plugins": ["react-cosmos-plugin-vite"],
+  "fixturesDir": "__fixtures__",
+  "fixtureFileSuffix": "fixture",
+  "watchDirs": ["src"],
+  "ignore": ["**/dist/**", "**/node_modules/**", "**/cosmos-export/**"],
+  "globalImports": ["./src/cosmos.css"],
+  "vite": {
+    "port": 5050
+  }
+}

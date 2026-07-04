@@ -1,0 +1,29 @@
+{
+  "name": "adopt-pet-design-system",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Design System for an Adoption Pet Web, built with React + Vite + Tailwind + React Cosmos, structured following Atomic Design principles.",
+  "scripts": {
+    "dev": "vite",
+    "cosmos": "cosmos",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "prop-types": "^15.8.1",
+    "react": "^18.3.1",
+    "react-cosmos": "^7.3.0",
+    "react-cosmos-dom": "^7.3.0",
+    "react-cosmos-fixture": "^4.8.1",
+    "react-cosmos-plugin-vite": "^7.3.0",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.4",
+    "autoprefixer": "^10.4.20",
+    "postcss": "^8.4.47",
+    "tailwindcss": "^3.4.14",
+    "vite": "^5.4.10"
+  }
+}
