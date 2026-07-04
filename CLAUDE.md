@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A design system for a pet-adoption web app, organized by Atomic Design (atoms → molecules → organisms → templates → pages). Stack: React 18 + TypeScript + Vite 5 + Tailwind CSS 4 (CSS-first) + React Cosmos 7. Package manager is **pnpm**.
 
-Note: parts of README.md predate the Tailwind 4 / TypeScript migration — it still references `tailwind.config.js` and `prop-types`, neither of which exists anymore. Design tokens live in `src/styles/theme.css`; components are typed with TS interfaces.
+Design tokens live in `src/styles/theme.css`; components are typed with TS interfaces.
 
 ## Commands
 

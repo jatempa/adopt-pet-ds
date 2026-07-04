@@ -4,7 +4,7 @@ A complete **Design System** for an *Adoption Pet Web*, built as a learning
 reference for the **Atomic Design** methodology. Every component is documented
 live in **React Cosmos** so you can browse, tweak, and learn from it.
 
-> **Stack:** React 18 · Vite 5 · Tailwind CSS 3 · React Cosmos 7
+> **Stack:** React 18 · TypeScript · Vite 5 · Tailwind CSS 4 · React Cosmos 7
 
 ---
 
@@ -55,17 +55,18 @@ ask: **"Does it compose other components from this design system?"**
 
 ```bash
 cd adopt-pet-ds
-npm install
+pnpm install
 ```
 
 ### Two apps, one codebase
 
 | Script                | What it does                                                              | Open                       |
 | --------------------- | ------------------------------------------------------------------------- | -------------------------- |
-| `npm run dev`         | Vite serves the **showcase** app (real pages, navigation, demo data).     | http://localhost:5173      |
-| `npm run cosmos`      | **React Cosmos** playground — every component in isolation, with fixtures | http://localhost:5000      |
-| `npm run build`       | Production build of the showcase app.                                     | `/dist`                    |
-| `npm run preview`     | Serve a built bundle.                                                     | http://localhost:4173      |
+| `pnpm dev`            | Vite serves the **showcase** app (real pages, navigation, demo data).     | http://localhost:5173      |
+| `pnpm cosmos`         | **React Cosmos** playground — every component in isolation, with fixtures | http://localhost:5000      |
+| `pnpm build`          | Typecheck (`tsc --noEmit`) + production build of the showcase app.        | `/dist`                    |
+| `pnpm typecheck`      | `tsc --noEmit` (strict mode) — the verification step.                     | —                          |
+| `pnpm preview`        | Serve a built bundle.                                                     | http://localhost:4173      |
 
 > Tip: run Cosmos in one terminal and `dev` in another so you can see the
 > same component both in a fixture *and* in a real page side-by-side.
@@ -137,7 +138,7 @@ organisms
 
 ### What this project gives you
 
-Open **http://localhost:5000** after `npm run cosmos` and you'll find:
+Open **http://localhost:5000** after `pnpm cosmos` and you'll find:
 
 - **7 atom fixtures** — every visual state of every atom.
 - **4 molecule fixtures** — composed atoms in real patterns.
@@ -152,10 +153,12 @@ Open **http://localhost:5000** after `npm run cosmos` and you'll find:
 ```
 adopt-pet-ds/
 ├── cosmos.config.json        ← React Cosmos config
-├── tailwind.config.js        ← Design tokens (the source of truth)
 ├── vite.config.ts            ← Vite config
 └── src/
-    ├── index.css             ← Tailwind layers + utilities
+    ├── styles/
+    │   └── theme.css         ← Design tokens (the source of truth)
+    ├── index.css             ← Tailwind entry for the showcase app
+    ├── cosmos.css            ← Tailwind entry for Cosmos fixtures
     ├── main.tsx              ← App entry (showcase mode)
     ├── App.tsx               ← Tiny "router" between Home / Adoption form
     ├── data/
@@ -210,17 +213,25 @@ the barrel changes.
 
 ## 🎨 Design tokens
 
-All visual decisions live in `tailwind.config.js`. **Never hard-code a color
-or font in a component.** Always reach for `theme('colors.brand.primary')`
-or the matching Tailwind class (e.g. `bg-brand-primary`).
+All visual decisions live in `src/styles/theme.css` as Tailwind 4 `@theme`
+tokens (CSS-first — there is no `tailwind.config.js`). **Never hard-code a
+color or font in a component.** Each variable becomes a utility class
+(e.g. `--color-brand-primary` → `bg-brand-primary`).
 
-```js
-colors: {
-  brand:       { primary: '#FF7A59', ... },
-  accent:      { cream: '#FFF8F1', bark: '#4A3B30' },
-  state:       { success, warning, danger, info }
+```css
+@theme {
+  --color-brand-primary: #ff7a59;
+  --color-accent-cream: #fff8f1;
+  --color-accent-bark: #4a3b30;
+  --font-display: 'Fredoka', sans-serif;
+  --text-heading: /* size + line-height + weight baked in */;
+  /* ... surface & state colors, radii, shadows */
 }
 ```
+
+The type scale is semantic tokens too (`text-display-lg`, `text-display`,
+`text-heading`, `text-subheading`, `text-eyebrow`, …) — typography is
+tokens, not a wrapper component.
 
 To rebrand the whole system, change those values — every component updates.
 
@@ -239,8 +250,8 @@ React-Cosmos-+-Tailwind pitfall:
 **Fix:** tell Cosmos to import your CSS as a *global import* before any
 fixture loads.
 
-1. Add a `src/cosmos.css` (or reuse `src/index.css`) containing the
-   `@tailwind base/components/utilities` directives.
+1. Add a `src/cosmos.css` (or reuse `src/index.css`) that does
+   `@import "tailwindcss";` plus the theme tokens.
 2. In `cosmos.config.json`:
    ```json
    "globalImports": ["./src/cosmos.css"]
@@ -256,12 +267,12 @@ renders. This repo already has it wired up — see `cosmos.config.json` and
 
 ## 🧪 Learning exercises — try these!
 
-1. **Swap the brand color.** Change `brand.primary` in
-   `tailwind.config.js` to `#3B82F6` and watch every button, badge, and hero
-   shift instantly.
+1. **Swap the brand color.** Change `--color-brand-primary` in
+   `src/styles/theme.css` to `#3B82F6` and watch every button, badge, and
+   hero shift instantly.
 
 2. **Add a new atom.** Create `src/components/atoms/Spinner/Spinner.tsx` with
-   a `__fixtures__/Spinner.fixture.tsx`. Re-run `npm run cosmos` and it's
+   a `__fixtures__/Spinner.fixture.tsx`. Re-run `pnpm cosmos` and it's
    there in the tree. *Auto-discovery is the magic.*
 
 3. **Add a "Loading..." state to PetCard.**
@@ -274,8 +285,8 @@ renders. This repo already has it wired up — see `cosmos.config.json` and
    Wire it into `App.tsx` next to the others.
 
 5. **Use the design tokens.** Pick a token, then grep
-   for `bg-[#` or `text-[#` — you should find ZERO matches outside the
-   config. That's what guarantees consistency.
+   for `bg-[#` or `text-[#` — you should find ZERO matches outside
+   `theme.css`. That's what guarantees consistency.
 
 6. **Promote an atom to a molecule.** Add the `Icon` atom inside the
    `Button` component. Notice how `Button` immediately becomes a molecule
@@ -286,7 +297,8 @@ renders. This repo already has it wired up — see `cosmos.config.json` and
 ## 📝 Conventions used in this project
 
 - **Default exports for components**, named exports for fixtures.
-- **PropTypes** (lightweight runtime check — `prop-types` package).
+- **TypeScript interfaces for props** (strict mode) — props extend the native
+  element's attributes (e.g. `ButtonHTMLAttributes<HTMLButtonElement>`).
 - **Tailwind utility classes inline**, no CSS Modules or styled-components
   — tokens do all the heavy lifting.
 - **Each layer has an `index.ts` barrel** for clean public APIs.
