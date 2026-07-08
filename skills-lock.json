@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "atomic-design": {
+      "source": "jwilger/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/atomic-design/SKILL.md",
+      "computedHash": "7ccfec65e59c1d9d9b7d798771b335d49ab99c2e726b17ef6e810782347df857"
+    },
+    "atomic-design-templates": {
+      "source": "thebushidocollective/han",
+      "sourceType": "github",
+      "skillPath": "plugins/patterns/atomic-design/skills/atomic-design-templates/SKILL.md",
+      "computedHash": "f2dba1bb11874f4413d04ed3203214d696389bfb760056130e02b3f0d7bbe25b"
+    },
+    "tailwind-design-system": {
+      "source": "wshobson/agents",
+      "sourceType": "github",
+      "skillPath": "plugins/frontend-mobile-development/skills/tailwind-design-system/SKILL.md",
+      "computedHash": "cd61afd28f594e8b6712b61749209cbb4466e3eec4e4223793bbd97fc85c1b63"
+    }
+  }
+}
