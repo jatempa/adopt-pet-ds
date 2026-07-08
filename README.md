@@ -16,12 +16,12 @@ from smallest to largest:
 
 ```
   ATOMS ──▶ MOLECULES ──▶ ORGANISMS ──▶ TEMPLATES ──▶ PAGES
-  (3-6)        (4)             (4)            (1)         (2)
+  (10)         (4)             (4)            (1)         (2)
 ```
 
 | Layer        | Definition                                                                        | Example in this repo                         |
 | ------------ | --------------------------------------------------------------------------------- | -------------------------------------------- |
-| **Atom**     | The smallest UI unit. A single HTML element + design tokens. No composition.      | `Button`, `Input`, `Badge`, `Icon`, `Avatar`, `Label` |
+| **Atom**     | The smallest UI unit. A single HTML element + design tokens. No composition.      | `Button`, `Input`, `Textarea`, `Select`, `Checkbox`, `Radio`, `Badge`, `Icon`, `Avatar`, `Label` |
 | **Molecule** | A small group of atoms working together as one UI "thing".                        | `SearchBar`, `PetCard`, `Tag`, `FormField`   |
 | **Organism** | A distinct section of an interface that may compose molecules + atoms.            | `Header`, `Footer`, `PetGallery`, `PetFilters` |
 | **Template** | A page-level skeleton. *Defines where things go, not what they are*.              | `MainLayout`                                 |
@@ -140,7 +140,10 @@ organisms
 
 Open **http://localhost:5000** after `pnpm cosmos` and you'll find:
 
-- **7 atom fixtures** — every visual state of every atom.
+- **2 foundation fixtures** (`src/__fixtures__/`) — the design-token palette
+  and the typography scale, documented live.
+- **11 atom fixtures** (10 atoms; `Button` has two) — every visual state of
+  every atom.
 - **4 molecule fixtures** — composed atoms in real patterns.
 - **4 organism fixtures** — full sections in isolation.
 - **1 template fixture** — the page chrome, slot ready.
@@ -161,15 +164,19 @@ adopt-pet-ds/
     ├── cosmos.css            ← Tailwind entry for Cosmos fixtures
     ├── main.tsx              ← App entry (showcase mode)
     ├── App.tsx               ← Tiny "router" between Home / Adoption form
+    ├── lib/
+    │   └── cn.ts             ← clsx + tailwind-merge class helper
     ├── data/
     │   └── pets.ts           ← Shared mock data (also used by fixtures)
+    ├── __fixtures__/         ← Foundation fixtures (DesignTokens, Typography)
     └── components/
         ├── atoms/                        ← Layer 1
         │   ├── Button/
         │   │   ├── Button.tsx
         │   │   └── __fixtures__/Primary.fixture.tsx
         │   │   └── __fixtures__/AllVariants.fixture.tsx
-        │   ├── Input/, Label/, Badge/, Avatar/, Icon/
+        │   ├── Input/, Textarea/, Select/, Checkbox/, Radio/,
+        │   │   Label/, Badge/, Avatar/, Icon/
         │   └── index.ts                 ← public exports
         ├── molecules/                    ← Layer 2
         │   ├── SearchBar/
@@ -231,9 +238,12 @@ color or font in a component.** Each variable becomes a utility class
 
 The type scale is semantic tokens too (`text-display-lg`, `text-display`,
 `text-heading`, `text-subheading`, `text-eyebrow`, …) — typography is
-tokens, not a wrapper component.
+tokens, not a wrapper component. `theme.css` also defines the shared
+`.ds-focus-ring` utility used by every interactive atom.
 
 To rebrand the whole system, change those values — every component updates.
+Browse the tokens live in Cosmos under the **DesignTokens** and
+**Typography** foundation fixtures.
 
 ---
 
@@ -301,6 +311,11 @@ renders. This repo already has it wired up — see `cosmos.config.json` and
   element's attributes (e.g. `ButtonHTMLAttributes<HTMLButtonElement>`).
 - **Tailwind utility classes inline**, no CSS Modules or styled-components
   — tokens do all the heavy lifting.
+- **`cva()` for variants** — each atom's variant/size styling is a
+  `class-variance-authority` definition with `defaultVariants`, composed via
+  the `cn()` helper (`src/lib/cn.ts`, clsx + tailwind-merge) so a
+  caller-passed `className` predictably wins conflicts:
+  `cn(buttonVariants({ variant, size }), className)`.
 - **Each layer has an `index.ts` barrel** for clean public APIs.
 - **Co-located `__fixtures__/` directory** so fixtures live with their
   component.

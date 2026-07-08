@@ -47,6 +47,8 @@ Component conventions:
 
 Every component has a co-located `__fixtures__/<Name>.fixture.tsx` (auto-discovered per `cosmos.config.json`). Named exports become separate fixture entries; the default export is the initial view. Shared demo data lives in `src/data/pets.ts` and is used by both fixtures and the showcase app. When adding a component, add a fixture.
 
+`src/__fixtures__/` also holds foundation fixtures (`DesignTokens`, `Typography`) that document the token palette and type scale themselves — update them when tokens change.
+
 ### Showcase app
 
 `src/App.tsx` is a tiny state-based "router" between `HomePage` and `AdoptionFormPage` inside `MainLayout` — intentionally no react-router.
