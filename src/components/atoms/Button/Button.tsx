@@ -18,28 +18,42 @@
  *   4. Fully self-contained: drop it anywhere in the app and it looks right.
  */
 import type { ButtonHTMLAttributes } from 'react';
+import { cva } from 'class-variance-authority';
 import { cn } from '../../../lib/cn';
 
 export type ButtonVariant = 'primary' | 'secondary' | 'ghost';
 export type ButtonSize = 'sm' | 'md' | 'lg';
 
-const VARIANTS: Record<ButtonVariant, string> = {
-  // Filled with brand orange — primary call-to-action, e.g. "Adopt me"
-  primary:
-    'bg-brand-primary text-white hover:bg-brand-primary-hover active:translate-y-px shadow-soft',
-  // Outlined — secondary action, e.g. "Learn more"
-  secondary:
-    'bg-transparent text-brand-secondary border border-brand-secondary hover:bg-brand-secondary hover:text-white',
-  // Subtle — low-emphasis action, e.g. "Cancel" in a modal
-  ghost:
-    'bg-transparent text-accent-bark hover:bg-surface-muted'
-};
-
-const SIZES: Record<ButtonSize, string> = {
-  sm: 'h-8 px-3 text-sm',
-  md: 'h-10 px-5 text-sm',
-  lg: 'h-12 px-6 text-base'
-};
+const buttonVariants = cva(
+  [
+    'inline-flex items-center justify-center gap-2 rounded-xl font-medium',
+    'transition-colors duration-150 ds-focus-ring',
+    'disabled:opacity-50 disabled:cursor-not-allowed'
+  ],
+  {
+    variants: {
+      variant: {
+        // Filled with brand orange — primary call-to-action, e.g. "Adopt me"
+        primary:
+          'bg-brand-primary text-white hover:bg-brand-primary-hover active:translate-y-px shadow-soft',
+        // Outlined — secondary action, e.g. "Learn more"
+        secondary:
+          'bg-transparent text-brand-secondary border border-brand-secondary hover:bg-brand-secondary hover:text-white',
+        // Subtle — low-emphasis action, e.g. "Cancel" in a modal
+        ghost: 'bg-transparent text-accent-bark hover:bg-surface-muted'
+      },
+      size: {
+        sm: 'h-8 px-3 text-sm',
+        md: 'h-10 px-5 text-sm',
+        lg: 'h-12 px-6 text-base'
+      }
+    },
+    defaultVariants: {
+      variant: 'primary',
+      size: 'md'
+    }
+  }
+);
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: ButtonVariant;
@@ -59,14 +73,7 @@ export default function Button({
 }: ButtonProps) {
   // Compose the className defensively. Atoms should NEVER require you to
   // pass `className` — but if you do, tailwind-merge makes your class win.
-  const classes = cn(
-    'inline-flex items-center justify-center gap-2 rounded-xl font-medium',
-    'transition-colors duration-150 ds-focus-ring',
-    'disabled:opacity-50 disabled:cursor-not-allowed',
-    VARIANTS[variant],
-    SIZES[size],
-    className
-  );
+  const classes = cn(buttonVariants({ variant, size }), className);
 
   return (
     <button

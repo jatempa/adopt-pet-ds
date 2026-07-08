@@ -7,16 +7,30 @@
  * Atomic because: ONE element, ONE concern (a small visual identifier).
  */
 import { useState } from 'react';
+import { cva } from 'class-variance-authority';
 import { cn } from '../../../lib/cn';
 
 export type AvatarSize = 'sm' | 'md' | 'lg' | 'xl';
 
-const SIZES: Record<AvatarSize, string> = {
-  sm: 'h-8 w-8 text-xs',
-  md: 'h-12 w-12 text-sm',
-  lg: 'h-20 w-20 text-lg',
-  xl: 'h-32 w-32 text-2xl'
-};
+const avatarVariants = cva(
+  [
+    'inline-flex items-center justify-center rounded-full overflow-hidden',
+    'bg-brand-secondary/20 text-brand-secondary font-semibold'
+  ],
+  {
+    variants: {
+      size: {
+        sm: 'h-8 w-8 text-xs',
+        md: 'h-12 w-12 text-sm',
+        lg: 'h-20 w-20 text-lg',
+        xl: 'h-32 w-32 text-2xl'
+      }
+    },
+    defaultVariants: {
+      size: 'md'
+    }
+  }
+);
 
 export interface AvatarProps {
   src?: string | null;
@@ -41,12 +55,7 @@ export default function Avatar({
     .join('')
     .toUpperCase();
 
-  const classes = cn(
-    'inline-flex items-center justify-center rounded-full overflow-hidden',
-    'bg-brand-secondary/20 text-brand-secondary font-semibold',
-    SIZES[size],
-    className
-  );
+  const classes = cn(avatarVariants({ size }), className);
 
   if (!src || errored) {
     return (

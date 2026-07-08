@@ -40,7 +40,7 @@ Both import `tailwindcss` plus `./styles/theme.css`. If you change global base s
 Component conventions:
 
 - Default export for the component; each file opens with an "educational JSDoc" explaining why it belongs to its layer — keep that pattern for new components.
-- Variant/size styling uses `Record<Variant, string>` maps of Tailwind classes plus the `cn()` helper (`src/lib/cn.ts`, clsx + tailwind-merge) so a caller-passed `className` predictably wins conflicts.
+- Variant/size styling uses `cva()` (class-variance-authority) definitions of Tailwind classes with `defaultVariants`, composed via the `cn()` helper (`src/lib/cn.ts`, clsx + tailwind-merge) — e.g. `cn(buttonVariants({ variant, size }), className)` — so a caller-passed `className` predictably wins conflicts.
 - Props extend the native element's attributes (e.g. `ButtonHTMLAttributes<HTMLButtonElement>`).
 
 ### Fixtures (React Cosmos)
