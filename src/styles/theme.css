@@ -5,28 +5,101 @@
  * (e.g. --color-brand-primary → bg-brand-primary, text-brand-primary, …).
  * Imported by BOTH CSS entries (src/index.css for the app, src/cosmos.css for
  * the Cosmos playground) so components render identically in both.
+ *
+ * Theming model:
+ *   Color values live on :root as --ds-* variables with a `.dark` override
+ *   block, and the @theme block maps them via `inline` so Tailwind utilities
+ *   resolve through the variables at runtime. Adding `class="dark"` to <html>
+ *   flips the entire system — components never mention dark mode.
  */
-@theme {
+
+/* Class-driven dark mode (Tailwind v4 pattern): `dark:` variants apply when
+   an ancestor has the `dark` class. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
   /* Brand — warm orange (friendly, energetic) + sage green (growth, wellbeing) */
-  --color-brand-primary: #FF7A59;
-  --color-brand-primary-hover: #E5674A;
-  --color-brand-secondary: #6FAE8E;
-  --color-brand-secondary-hover: #578F71;
+  --ds-brand-primary: #FF7A59;
+  --ds-brand-primary-hover: #E5674A;
+  --ds-brand-secondary: #6FAE8E;
+  --ds-brand-secondary-hover: #578F71;
 
   /* Accents — soft cream background, cozy brown text */
-  --color-accent-cream: #FFF8F1;
-  --color-accent-bark: #4A3B30;
+  --ds-accent-cream: #FFF8F1;
+  --ds-accent-bark: #4A3B30;
 
   /* Surfaces */
-  --color-surface: #FFFFFF;
-  --color-surface-muted: #F5F1EC;
+  --ds-surface: #FFFFFF;
+  --ds-surface-muted: #F5F1EC;
+
+  /* Borders — hairlines (cards, dividers, inputs) vs. form-control strokes */
+  --ds-border: #EDE6DE;
+  --ds-border-strong: #C9BFB4;
 
   /* Semantic states */
-  --color-state-success: #22C55E;
-  --color-state-warning: #F59E0B;
-  --color-state-danger: #EF4444;
-  --color-state-info: #3B82F6;
+  --ds-state-success: #22C55E;
+  --ds-state-warning: #F59E0B;
+  --ds-state-danger: #EF4444;
+  --ds-state-info: #3B82F6;
 
+  /* Soft, warm shadow */
+  --ds-shadow-soft: 0 4px 14px rgba(74, 59, 48, 0.08);
+}
+
+/* Dark theme — warm near-black surfaces, cream text, slightly brighter brand
+   hues so they keep contrast on dark backgrounds. Hover states get LIGHTER
+   (toward the light source) instead of darker. */
+.dark {
+  --ds-brand-primary: #FF8A6B;
+  --ds-brand-primary-hover: #FF9C82;
+  --ds-brand-secondary: #7FBD9D;
+  --ds-brand-secondary-hover: #93CBAE;
+
+  --ds-accent-cream: #171310;
+  --ds-accent-bark: #F0E8E0;
+
+  --ds-surface: #221C17;
+  --ds-surface-muted: #2B241E;
+
+  --ds-border: #3A322A;
+  --ds-border-strong: #52463C;
+
+  --ds-state-success: #4ADE80;
+  --ds-state-warning: #FBBF24;
+  --ds-state-danger: #F87171;
+  --ds-state-info: #60A5FA;
+
+  --ds-shadow-soft: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+/* Map the theme-aware variables into Tailwind tokens. `inline` makes the
+   generated utilities reference var(--ds-*) directly, so they follow the
+   light/dark values above at runtime. */
+@theme inline {
+  --color-brand-primary: var(--ds-brand-primary);
+  --color-brand-primary-hover: var(--ds-brand-primary-hover);
+  --color-brand-secondary: var(--ds-brand-secondary);
+  --color-brand-secondary-hover: var(--ds-brand-secondary-hover);
+
+  --color-accent-cream: var(--ds-accent-cream);
+  --color-accent-bark: var(--ds-accent-bark);
+
+  --color-surface: var(--ds-surface);
+  --color-surface-muted: var(--ds-surface-muted);
+
+  --color-border: var(--ds-border);
+  --color-border-strong: var(--ds-border-strong);
+
+  --color-state-success: var(--ds-state-success);
+  --color-state-warning: var(--ds-state-warning);
+  --color-state-danger: var(--ds-state-danger);
+  --color-state-info: var(--ds-state-info);
+
+  --shadow-soft: var(--ds-shadow-soft);
+}
+
+/* Static (theme-independent) tokens. */
+@theme {
   /* Typography — friendly rounded sans for headings, neutral for body.
      Font families become utilities: font-display / font-sans. */
   --font-display: "Fredoka", system-ui, sans-serif;
@@ -63,15 +136,12 @@
   /* Radii — softer than Tailwind's defaults (0.75rem / 1rem) to feel pet-friendly */
   --radius-xl: 0.875rem;
   --radius-2xl: 1.25rem;
-
-  /* Soft, warm shadow */
-  --shadow-soft: 0 4px 14px rgba(74, 59, 48, 0.08);
 }
 
 /* Reusable design-system utilities. These are NOT component
    implementations — atoms/molecules live in /components. */
 @layer components {
   .ds-focus-ring {
-    @apply focus:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2;
+    @apply focus:outline-hidden focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2 focus-visible:ring-offset-accent-cream;
   }
 }

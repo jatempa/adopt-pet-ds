@@ -21,6 +21,13 @@ type Route = (typeof ROUTES)[keyof typeof ROUTES];
 export default function App() {
   const [route, setRoute] = useState<Route>(ROUTES.HOME);
   const [petName, setPetName] = useState('Mochi');
+  const [dark, setDark] = useState(false);
+
+  const toggleDark = () => {
+    // The `dark` class on <html> drives the .dark token overrides in theme.css.
+    document.documentElement.classList.toggle('dark', !dark);
+    setDark(!dark);
+  };
 
   const handleSelect = (pet: Pet) => {
     setPetName(pet.name);
@@ -49,6 +56,9 @@ export default function App() {
           onClick={() => setRoute(ROUTES.FORM)}
         >
           Adoption form
+        </Button>
+        <Button variant="ghost" size="sm" onClick={toggleDark} className="ml-auto">
+          {dark ? 'Light mode' : 'Dark mode'}
         </Button>
       </div>
 

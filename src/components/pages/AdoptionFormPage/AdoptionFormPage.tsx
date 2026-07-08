@@ -6,9 +6,17 @@
  * multi-step adoption form.
  */
 import { useState, type ChangeEvent } from 'react';
-import { Button, Icon } from '../../atoms';
+import { Button, Checkbox, Icon } from '../../atoms';
 import { FormField } from '../../molecules';
+import type { FormFieldElement } from '../../molecules/FormField/FormField';
 import { cn } from '../../../lib/cn';
+
+const HOME_TYPES = [
+  { value: 'apartment', label: 'Apartment' },
+  { value: 'house', label: 'House' },
+  { value: 'farm', label: 'Farm or acreage' },
+  { value: 'other', label: 'Something else' }
+];
 
 export interface AdoptionFormPageProps {
   petName?: string;
@@ -40,9 +48,8 @@ export default function AdoptionFormPage({
   const [errors, setErrors] = useState<FormErrors>({});
 
   const update =
-    (k: keyof AdoptionForm) => (e: ChangeEvent<HTMLInputElement>) => {
-      const v = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
-      setForm((s) => ({ ...s, [k]: v }));
+    (k: keyof AdoptionForm) => (e: ChangeEvent<FormFieldElement>) => {
+      setForm((s) => ({ ...s, [k]: e.target.value }));
     };
 
   const validateStep1 = () => {
@@ -122,20 +129,21 @@ export default function AdoptionFormPage({
               label="What is your home like?"
               value={form.homeType}
               onChange={update('homeType')}
-              placeholder="Apartment, house, etc."
+              options={HOME_TYPES}
+              placeholder="Choose one"
             />
-            <label className="flex items-center gap-2 self-end text-sm">
-              <input
-                type="checkbox"
-                checked={form.hasYard}
-                onChange={update('hasYard')}
-                className="h-4 w-4 rounded border-accent-bark/30 text-brand-primary"
-              />
-              I have a yard
-            </label>
+            <Checkbox
+              label="I have a yard"
+              checked={form.hasYard}
+              onChange={(e) =>
+                setForm((s) => ({ ...s, hasYard: e.target.checked }))
+              }
+              className="self-end pb-2.5"
+            />
             <FormField
               id="exp"
               label="Pet experience"
+              multiline
               value={form.experience}
               onChange={update('experience')}
               placeholder="Tell us about your past pets"

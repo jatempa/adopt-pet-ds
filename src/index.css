@@ -7,8 +7,10 @@
 @layer base {
   html {
     font-family: var(--font-sans);
-    color: var(--color-accent-bark);
-    background-color: var(--color-accent-cream);
+    /* --ds-* (not --color-*): the @theme inline mapping doesn't re-emit
+       --color-* variables, and these follow the light/dark theme. */
+    color: var(--ds-accent-bark);
+    background-color: var(--ds-accent-cream);
   }
   h1, h2, h3, h4 {
     font-family: var(--font-display);

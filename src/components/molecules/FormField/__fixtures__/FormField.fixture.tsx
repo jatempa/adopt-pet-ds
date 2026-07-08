@@ -17,5 +17,25 @@ export default (
       value=""
       onChange={() => {}}
     />
+    <FormField
+      id="d"
+      label="What is your home like?"
+      placeholder="Choose one"
+      options={[
+        { value: 'apartment', label: 'Apartment' },
+        { value: 'house', label: 'House' },
+        { value: 'farm', label: 'Farm or acreage' }
+      ]}
+      value=""
+      onChange={() => {}}
+    />
+    <FormField
+      id="e"
+      label="Pet experience"
+      multiline
+      placeholder="Tell us about your past pets"
+      value=""
+      onChange={() => {}}
+    />
   </div>
 );

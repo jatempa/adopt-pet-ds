@@ -43,7 +43,7 @@ export default function Header({
   links = NAV_LINKS
 }: HeaderProps) {
   return (
-    <header className="sticky top-0 z-30 border-b border-accent-bark/5 bg-surface/80 backdrop-blur">
+    <header className="sticky top-0 z-30 border-b border-border/60 bg-surface/80 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center gap-6 px-6 py-4">
         {/* Brand */}
         <a href="#" className="flex items-center gap-2">
@@ -88,7 +88,7 @@ export default function Header({
       </div>
 
       {/* Mobile search row */}
-      <div className="border-t border-accent-bark/5 bg-surface px-6 py-3 md:hidden">
+      <div className="border-t border-border/60 bg-surface px-6 py-3 md:hidden">
         <SearchBar onSubmit={onSearch} />
       </div>
     </header>

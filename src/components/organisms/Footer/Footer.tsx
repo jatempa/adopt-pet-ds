@@ -34,7 +34,7 @@ export default function Footer({ sections }: FooterProps) {
   const cols = sections || DEFAULT_SECTIONS;
 
   return (
-    <footer className="mt-24 border-t border-accent-bark/10 bg-surface-muted">
+    <footer className="mt-24 border-t border-border bg-surface-muted">
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-8 px-4 py-10 sm:px-6 md:grid-cols-4 md:py-12">
         <div className="col-span-2 md:col-span-1">
           <div className="flex items-center gap-2">
@@ -69,7 +69,7 @@ export default function Footer({ sections }: FooterProps) {
           </div>
         ))}
       </div>
-      <div className="border-t border-accent-bark/10">
+      <div className="border-t border-border">
         <div className="mx-auto max-w-6xl px-6 py-4 text-center text-xs text-accent-bark/60">
           © {new Date().getFullYear()} AdoptPet Design System — built with React,
           Vite, Tailwind & React Cosmos.

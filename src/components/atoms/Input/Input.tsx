@@ -26,7 +26,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(function Input(
     'transition-colors duration-150 ds-focus-ring',
     invalid
       ? 'border-state-danger focus-visible:ring-state-danger'
-      : 'border-accent-bark/15 focus:border-brand-primary',
+      : 'border-border focus:border-brand-primary',
     disabled && 'opacity-60 cursor-not-allowed bg-surface-muted',
     className
   );

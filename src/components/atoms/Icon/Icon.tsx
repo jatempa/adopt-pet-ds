@@ -33,6 +33,7 @@ const SPRITE = {
     'M5 12l5 5 9-11',
   'arrow-right':
     'M5 12h14M13 5l7 7-7 7',
+  'chevron-down': 'M6 9l6 6 6-6',
   calendar:
     'M8 2v4M16 2v4M3 10h18M5 6h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2z',
   info: 'M12 16v-4M12 8h.01M12 22a10 10 0 1 1 0-20 10 10 0 0 1 0 20z'
@@ -46,6 +47,7 @@ const STROKE_ICONS = new Set<IconName>([
   'search',
   'mail',
   'arrow-right',
+  'chevron-down',
   'check',
   'calendar',
   'info',

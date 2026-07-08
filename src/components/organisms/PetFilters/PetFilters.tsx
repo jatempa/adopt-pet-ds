@@ -1,11 +1,13 @@
 /**
  * Organism: PetFilters
  * ----------------------------------------------------------------------------
- * A compound filter bar: species pills + a couple of dropdowns.
- * Demonstrates how state can live *inside* an organism while still being
- * driver-agnostic (the parent page calls `onChange` with a filter object).
+ * A compound filter bar: species pills + size/age dropdowns.
+ * Fully CONTROLLED: the parent owns the filter state and passes it back in
+ * via `value`; every interaction calls `onChange` with the next state. No
+ * internal state mirror means no way for the UI and the parent to disagree —
+ * and the organism stays presentational (renders identically in Cosmos from
+ * mock props).
  */
-import { useState } from 'react';
 import { Button, Icon } from '../../atoms';
 import { Tag, FormField } from '../../molecules';
 
@@ -22,28 +24,33 @@ export interface PetFiltersProps {
 
 const EMPTY_FILTERS: PetFilterState = { species: [], size: '', age: '' };
 
-export default function PetFilters({ value, onChange }: PetFiltersProps) {
-  const [local, setLocal] = useState<PetFilterState>(value || EMPTY_FILTERS);
+const SIZE_OPTIONS = [
+  { value: 'small', label: 'Small (under 10 kg)' },
+  { value: 'medium', label: 'Medium (10–25 kg)' },
+  { value: 'large', label: 'Large (over 25 kg)' }
+];
 
+const AGE_OPTIONS = [
+  { value: 'baby', label: 'Baby' },
+  { value: 'young', label: 'Young' },
+  { value: 'adult', label: 'Adult' },
+  { value: 'senior', label: 'Senior' }
+];
+
+export default function PetFilters({
+  value = EMPTY_FILTERS,
+  onChange
+}: PetFiltersProps) {
   const toggleSpecies = (label: string) => {
-    const has = local.species.includes(label);
+    const has = value.species.includes(label);
     const next = has
-      ? local.species.filter((s) => s !== label)
-      : [...local.species, label];
-    const updated = { ...local, species: next };
-    setLocal(updated);
-    onChange?.(updated);
+      ? value.species.filter((s) => s !== label)
+      : [...value.species, label];
+    onChange?.({ ...value, species: next });
   };
 
   const update = (key: 'size' | 'age', val: string) => {
-    const updated = { ...local, [key]: val };
-    setLocal(updated);
-    onChange?.(updated);
-  };
-
-  const reset = () => {
-    setLocal(EMPTY_FILTERS);
-    onChange?.(EMPTY_FILTERS);
+    onChange?.({ ...value, [key]: val });
   };
 
   return (
@@ -61,7 +68,7 @@ export default function PetFilters({ value, onChange }: PetFiltersProps) {
             key={label}
             label={label}
             icon={label === 'Dog' || label === 'Cat' ? 'paw' : null}
-            selected={local.species.includes(label)}
+            selected={value.species.includes(label)}
             onToggle={toggleSpecies}
           />
         ))}
@@ -71,19 +78,26 @@ export default function PetFilters({ value, onChange }: PetFiltersProps) {
         <FormField
           id="filter-size"
           label="Size"
-          value={local.size}
+          value={value.size}
           onChange={(e) => update('size', e.target.value)}
+          options={SIZE_OPTIONS}
           placeholder="Any size"
         />
         <FormField
           id="filter-age"
           label="Age"
-          value={local.age}
+          value={value.age}
           onChange={(e) => update('age', e.target.value)}
+          options={AGE_OPTIONS}
           placeholder="Any age"
         />
         <div className="flex items-end">
-          <Button variant="ghost" size="md" onClick={reset} className="w-full">
+          <Button
+            variant="ghost"
+            size="md"
+            onClick={() => onChange?.(EMPTY_FILTERS)}
+            className="w-full"
+          >
             Clear filters
           </Button>
         </div>

@@ -10,12 +10,13 @@
 @import "tailwindcss";
 @import "./styles/theme.css";
 
-/* Light, neutral iframe background — keeps the playground readable even
-   for "card-on-transparent" components. */
+/* Token-driven iframe background — keeps the playground readable even for
+   "card-on-transparent" components, and follows dark mode if a fixture adds
+   the `dark` class to <html>. */
 html,
 body,
 #root {
-  background: #FAFAFA;
+  background: var(--ds-surface-muted);
   min-height: 100%;
 }
 body {
